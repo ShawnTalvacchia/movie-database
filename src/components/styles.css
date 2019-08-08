@@ -1,0 +1,64 @@
+.test {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}  
+
+.custom-card {
+    width: 16rem !important;
+    max-height: 30rem;
+    margin-bottom: 1rem;
+    min-height: 25rem;
+    
+}
+
+.custom-card body {
+    padding: 0 !important;
+    margin: 0 !important;   
+}
+
+.card-header {
+    background: #047AFB;
+    color: white;
+    font-weight: bolder;
+    font-size: 2.2vh;
+    min-height: 75px;
+}
+.overview {
+    padding-top: 10px;
+    background-color: white;
+    color: #047AFB;
+    font-weight: bolder;
+}
+
+.openToggle {
+    overflow-y: auto;
+    height: 150px;
+}
+
+
+.overview:hover {
+    background-color:#047AFB;
+    color: white;
+}
+
+.movie-details {
+    color: rgb(0, 0, 43) !important;
+    background-color:lightgray !important;
+    list-style-type: none;
+}
+
+.movie-details ul {
+    padding-left: 0 !important;
+}
+
+.movie-details li {
+    list-style-type: none;
+    margin-top: 3px;
+    border-bottom: black;
+    border-width: 5px;
+}
+
+.space {
+    padding-bottom: 300px;
+}
