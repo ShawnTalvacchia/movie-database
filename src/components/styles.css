@@ -62,3 +62,48 @@
 .space {
     padding-bottom: 300px;
 }
+
+
+
+
+
+.my-NavBar {
+    min-height: 8rem;
+
+}
+
+.searches {
+    width: 85%;
+}
+
+.form-group {
+    margin-bottom: .1rem !important;
+}
+
+.nav-text {
+    justify-content: center;
+    color: #17a2b8;
+    font-size: 1.2rem;
+    margin-bottom: .1rem !important;
+
+}
+
+.subtext {
+    font-size: .9rem;
+}
+
+.SearchInput {
+    min-width: 80%;
+    max-width: 80%;
+}
+
+.SearchesContainer {
+    justify-content: center;
+   
+}
+
+.SearchColumn {
+    margin-left: .9rem;
+    margin-right: .9rem;
+}
+
