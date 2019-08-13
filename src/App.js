@@ -5,29 +5,33 @@ import "./App.css";
 import YouTube from "@u-wave/react-youtube";
 import InputRange from "react-input-range";
 import "react-input-range/lib/css/index.css";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Modal, ModalHeader, ModalBody, Pagination } from "reactstrap";
 
 import { Button, Navbar, Form, Col, Row } from "react-bootstrap";
 import Movies from "./components/Movies";
 import Genres from "./components/Genres";
 
 export default class App extends React.Component {
-  state = {
-    movies: [],
-    length: { min: 80, max: 150 },
-    year: { min: 1940, max: 2020 },
-    sort: "popularity",
-    ascend: "desc",
-    modal: false,
-    title: "",
-    genre: ""
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      movies: [],
+      length: { min: 80, max: 150 },
+      year: { min: 1940, max: 2020 },
+      sort: "popularity",
+      ascend: "desc",
+      modal: false,
+      title: "",
+      genre: "",
+      page: 1
+    };
+  }
 
   componentDidMount() {
     this.getMovies();
   }
 
-  async getMovies() {
+  async getMovies(page1) {
     const API_key = "4c5b4a5e627748117d4b24082672a9b4";
     // const movieType = this.state.movieType
     const longerThan = this.state.length.min;
@@ -36,10 +40,11 @@ export default class App extends React.Component {
     const beforeYear = this.state.year.max;
     const sort = this.state.sort;
     const ascend = this.state.ascend;
-    const genre = this.state.genre
+    const genre = this.state.genre;
+    const page = this.state.page;
 
     const response = await fetch(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${API_key}&language=en-US&sort_by=${sort}.${ascend}&include_adult=false&include_video=false&page=1&with_runtime.lte=${shorterThan}&with_runtime.gte=${longerThan}&release_date.gte=${afterYear}&release_date.lte=${beforeYear}&with_genres=${genre}`
+      `https://api.themoviedb.org/3/discover/movie?api_key=${API_key}&language=en-US&sort_by=${sort}.${ascend}&include_adult=false&include_video=false&page=${page}&with_runtime.lte=${shorterThan}&with_runtime.gte=${longerThan}&release_date.gte=${afterYear}&release_date.lte=${beforeYear}&with_genres=${genre}`
     );
     const jsonData = await response.json();
     // console.log("Array of a result", jsonData.results[1]);
@@ -51,24 +56,23 @@ export default class App extends React.Component {
   getTrailerKey = async movieId => {
     const API_key = "4c5b4a5e627748117d4b24082672a9b4";
     try {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_key}&language=en-US`
-    );
-    const jsonData = await response.json();
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${API_key}&language=en-US`
+      );
+      const jsonData = await response.json();
 
-    // console.log("Check this array", jsonData)
-    // if (jsonData.results.length > 0) {
+      // console.log("Check this array", jsonData)
+      // if (jsonData.results.length > 0) {
 
       this.setState({
         id: jsonData.results[0].key,
         modal: true,
         title: jsonData.results[0].name
       });
-    }
-    // }
-    catch (error) {
-      alert('No movie trailer')
-      console.log("error", error)
+    } catch (error) {
+      // }
+      alert("No movie trailer");
+      console.log("error", error);
     }
   };
 
@@ -121,9 +125,6 @@ export default class App extends React.Component {
 
         <Navbar sticky="top" bg="dark" variant="dark" className="my-NavBar">
           <Row className="justify-content-around nav-columns">
-            
-        
-            
             {/* Genres */}
             <Col md="12" lg="3" className="SearchesContainer">
               <Form.Group>
@@ -133,21 +134,19 @@ export default class App extends React.Component {
                     size="sm"
                     as="select"
                     value={this.state.genre}
-                    onChange={e => 
-                      this.setState ({genre: e.target.value}, () => 
-                      this.getMovies()
-                      )}
+                    onChange={e =>
+                      this.setState({ genre: e.target.value }, () =>
+                        this.getMovies()
+                      )
+                    }
                   >
-                  >
-                    <option value="">All</option>
-                    <Genres/>
+                    ><option value="">All</option>
+                    <Genres />
                   </Form.Control>
                 </Row>
               </Form.Group>
             </Col>
-            
-            
-            
+
             {/* Length */}
             <Col md="12" lg="3" className="SearchesContainer">
               <Form.Group>
@@ -190,10 +189,11 @@ export default class App extends React.Component {
                       size="sm"
                       as="select"
                       value={this.state.sort}
-                      onChange={e => 
-                        this.setState ({sort: e.target.value}, () => 
+                      onChange={e =>
+                        this.setState({ sort: e.target.value }, () =>
                           this.getMovies()
-                        )}
+                        )
+                      }
                     >
                       <option value="vote_average">vote</option>
                       <option value="popularity">popularity</option>
@@ -208,10 +208,11 @@ export default class App extends React.Component {
                       size="sm"
                       as="select"
                       value={this.state.ascend}
-                      onChange={e => 
-                         this.setState({ ascend: e.target.value }, () =>
+                      onChange={e =>
+                        this.setState({ ascend: e.target.value }, () =>
                           this.getMovies()
-                         )}
+                        )
+                      }
                     >
                       <option value="desc">descending</option>
                       <option value="asc">ascending</option>
@@ -224,6 +225,7 @@ export default class App extends React.Component {
         </Navbar>
         <div className="header-container">Filtered Films</div>
         <Movies movies={this.state.movies} toggle={this.toggle} />
+
       </div>
     );
   }
